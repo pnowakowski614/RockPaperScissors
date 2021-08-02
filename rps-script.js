@@ -1,3 +1,5 @@
+// function that pseudo-randomly generates computer choice
+
 function computerPlay() {
     let computerChoice = Math.floor(Math.random()*3 + 1);
     if (computerChoice === 1) {
@@ -11,9 +13,14 @@ function computerPlay() {
     }
 }
 
+// function capitalizing the user-choice so it's case-insensitive
+
 function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
+
+// one round function, returns the result of a round (-1, 0, 1)
+// -1 is a computer win, 0 is a tie, 1 is the player win
 
 function RockPaperScissors(playerSelection, computerSelection) {
     let computerMessage = "Computer chose: " + computerSelection + "\n\n";
@@ -57,6 +64,9 @@ function RockPaperScissors(playerSelection, computerSelection) {
 }
 }
 
+//game function includes player's choice, score-keeping, 5 rounds,
+//and a winner announcement
+
 function game() {
 
     let playerScore = 0;
@@ -81,4 +91,4 @@ function game() {
     else console.log("The game is a tie! You've both won " + playerScore + " times");
 }   
 
-game();
+//game();
