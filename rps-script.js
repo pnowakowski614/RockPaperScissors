@@ -13,52 +13,52 @@ function computerPlay() {
     }
 }
 
-// function capitalizing the user-choice so it's case-insensitive
-
-function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
-
 // one round function, returns the result of a round (-1, 0, 1)
 // -1 is a computer win, 0 is a tie, 1 is the player win
 
-function RockPaperScissors(playerSelection, computerSelection) {
-    let computerMessage = "Computer chose: " + computerSelection + "\n\n";
-    let winMessage = computerMessage + "You won! " + playerSelection + " beats " + computerSelection;
-    let loseMessage = computerMessage + "You lost! " + computerSelection + " beats " + playerSelection;
-    let tieMessage = computerMessage + "It's a tie! You both chose " + playerSelection;
+function RockPaperScissors(playerSelection, computerSelection, message) {
+    let userMessage = "You chose: " + playerSelection;
+    let computerMessage = "Computer chose: " + computerSelection;
+    let winMessage = "You won! " + playerSelection + " beats " + computerSelection;
+    let loseMessage = "You lost! " + computerSelection + " beats " + playerSelection;
+    let tieMessage = "It's a tie! You both chose " + playerSelection;
+
+    const computerChoiceDisplay = document.getElementById("computer-choice");
+    computerChoiceDisplay.textContent = computerMessage;
+    const userChoiceDisplay = document.getElementById("user-choice");
+    userChoiceDisplay.textContent = userMessage;
 
     if (playerSelection === computerSelection) {
-        console.log(tieMessage);
+        message.textContent = tieMessage;
         return 0;
     }
     else if (playerSelection === "Rock") {
         if (computerSelection === "Scissors") {
-            console.log(winMessage);
+            message.textContent = winMessage;
             return 1;
         }
         else {
-            console.log(loseMessage);
+            message.textContent = loseMessage;
             return -1;
         }
     }
     else if (playerSelection === "Scissors") {
         if (computerSelection === "Paper") {
-            console.log(winMessage);
+            message.textContent = winMessage;
             return 1;
         }
         else {
-            console.log(loseMessage);
+            message.textContent = loseMessage;
             return -1;
         }
     }
     else {
         if (computerSelection === "Rock") {
-            console.log(winMessage);
+            message.textContent = winMessage;
             return 1;
         }
         else {
-            console.log(loseMessage)
+            message.textContent = loseMessage;
             return -1;
     }
 }
@@ -69,26 +69,61 @@ function RockPaperScissors(playerSelection, computerSelection) {
 
 function game() {
 
+    const rock = document.getElementById("rock");
+    const paper = document.getElementById("paper");
+    const scissors = document.getElementById("scissors");
+
+    let modal = document.getElementById("myModal");
+
     let playerScore = 0;
     let computerScore = 0;
 
-    for(let i = 0; i < 5; i++) {
-        let playerSelection = capitalize(prompt("Make your choice! Rock, Paper or Scissors?"));
+    const playerScoreDisplay = document.getElementById("user-score");
+    const computerScoreDisplay = document.getElementById("computer-score");
+    const modalText = document.getElementById("modal-text");
 
-        while((playerSelection !== "Rock") && (playerSelection !== "Paper") && (playerSelection !== "Scissors"))  {
-        playerSelection = capitalize(prompt("Wrong choice! Rock, Paper or Scissors?"));
-        } 
-        let value = RockPaperScissors(playerSelection, computerPlay());
+    let firstMessage = "Make your choice! Rock, Paper or Scissors?";
+    const message = document.getElementById('messages');
+    message.textContent = firstMessage;
 
-        if (value === 1) ++playerScore;
-        if (value === -1) ++computerScore;
-
-        console.log("Current Score:\n" + "You: " + playerScore + "\nComputer: " + computerScore);
+    function playRound() {
+        let value;
+        value = RockPaperScissors(playerSelection, computerPlay(), message);
+        if (value === 1) {
+            ++playerScore;
+            playerScoreDisplay.textContent = playerScore;
+            }
+        if (value === -1) {
+            ++computerScore;
+            computerScoreDisplay.textContent = computerScore;
+        }
+        if (computerScore === 5 || playerScore === 5) {
+            if(playerScore > computerScore) {
+                modal.style.display = "block"; 
+                modalText.textContent = "Congratulations! You've won " + playerScore + " to " + computerScore + "!";
+            }//alert("Congratulations! You've won " + playerScore + " to " + computerScore);
+            else {
+                modal.style.display = "block";
+                modalText.textContent = "Bad luck! You've lost " + playerScore + " to " + computerScore + "!";
+            } //alert("Bad luck! You've lost " + playerScore + " to " + computerScore);
+       }    
     }
 
-    if(playerScore > computerScore) console.log("Congratulations! You've won " + playerScore + " to " + computerScore);
-    else if(playerScore < computerScore) console.log("Bad luck! You've lost " + playerScore + " to " + computerScore);
-    else console.log("The game is a tie! You've both won " + playerScore + " times");
+    rock.addEventListener('click', () => {
+        playerSelection = "Rock";
+        playRound();
+        });
+        
+    scissors.addEventListener('click', () => {
+        playerSelection = "Scissors";
+        playRound();
+        });
+
+    paper.addEventListener('click', () => {
+        playerSelection = "Paper";
+        playRound();
+        });
 }   
 
-//game();
+
+game();
